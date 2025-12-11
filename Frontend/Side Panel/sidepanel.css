@@ -185,7 +185,7 @@ blockquote::-webkit-scrollbar-thumb:hover {
 }
 
 .nav-button:hover {
-    background-color: #8dd6e5;
+    background-color: #d7f2f8;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: scale(1.01);
     transition: background-color 0.2s ease;

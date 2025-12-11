@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Check if mouse is over the title area (approximate top 40 pixels)
             if (y < 40) {
-                confidenceCanvas.title = "Overall confidence shows how much the tool believes\nthe news is real or fake based on content analysis.";
+                confidenceCanvas.title = "Overall confidence shows how much Tun-Eye believes\nthe news is real or fake based on content analysis.";
             } else {
                 confidenceCanvas.title = "";
             }

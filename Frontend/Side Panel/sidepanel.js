@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     title: {
                         display: true,
-                        text: 'Overall Confidence'
+                        text: 'Overall Confidence',
                     },
                     tooltip: {
                         callbacks: {
@@ -155,6 +155,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 maintainAspectRatio: false
             }
         });
+
+        // Add tooltip to the title element only
+        const confidenceCanvas = document.getElementById('confidenceChartCanvas');
+        confidenceCanvas.addEventListener('mousemove', (event) => {
+            const rect = confidenceCanvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // Check if mouse is over the title area (approximate top 40 pixels)
+            if (y < 40) {
+                confidenceCanvas.title = "Overall confidence shows how much the tool believes\nthe news is real or fake based on content analysis.";
+            } else {
+                confidenceCanvas.title = "";
+            }
+        });
+
 
         // Dynamic Scaling for Keyword Chart
         const scores = data.keywords.map(k => k.score);
@@ -172,54 +188,68 @@ document.addEventListener('DOMContentLoaded', () => {
             chartMax = 0.01; // Ensure a small visible range if all scores are zero
         }
 
+        const keywordsWithRaw = data.keywords.map(item => ({
+            word: item.word,
+            score: item.score,    // normalized
+            raw: parseFloat(item.weight) // keep raw
+        }));
+
         // Keyword Bar Chart
         const keywordCtx = document.getElementById('keywordChartCanvas').getContext('2d');
         keywordChart = new Chart(keywordCtx, {
             type: 'bar',
             data: {
-                labels: data.keywords.map(k => k.word),
+                labels: keywordsWithRaw.map(k => k.word),
                 datasets: [{
-                    data: scores,
-                    backgroundColor: data.keywords.map(k => {
+                    data: keywordsWithRaw.map(k => k.score),
+                    backgroundColor: keywordsWithRaw.map(k => {
                         const score = Number(k.score) || 0;
-                        if (score > WORD_THRESHOLD) return '#27ae60';       // real
-                        if (score < -WORD_THRESHOLD) return '#c0392b';     // fake
-                        return '#f39c12';                                   // neutral
+                        if (score > WORD_THRESHOLD) return '#27ae60';
+                        if (score < -WORD_THRESHOLD) return '#c0392b';
+                        return '#f39c12';
                     })
                 }]
             },
             options: {
                 indexAxis: 'y',
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     title: {
                         display: true,
                         text: 'Word-Level Analysis'
                     },
-                    tooltip: { 
+                    tooltip: {
                         callbacks: {
                             label: (context) => {
-                                const percent = (context.raw * 100).toFixed(2);
-                                return `${percent}%`;
+                                const k = keywordsWithRaw[context.dataIndex];
+                                const normalized = (k.score * 100).toFixed(2);
+                                const raw = k.raw.toFixed(4);
+                                return `${normalized}% (raw: ${raw})`;
                             }
                         }
                     }
                 },
                 scales: {
-                    x: {
-                        min: -chartMax,
-                        max: chartMax
-                    },
-                    y: {
-                        grid: {
-                            display: false
-                        }
-                    }
+                    x: { min: -1, max: 1 },
+                    y: { grid: { display: false } }
                 },
                 responsive: true,
                 maintainAspectRatio: false
+            }
+        });
+
+        // Add tooltip to the title element only
+        const canvas = document.getElementById('keywordChartCanvas');
+        canvas.addEventListener('mousemove', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // Check if mouse is over the title area (approximate top 40 pixels)
+            if (y < 40) {
+                canvas.title = "Word-level analysis shows how individual words contribute\nto the real/fake confidence score.";
+            } else {
+                canvas.title = "";
             }
         });
     }
@@ -338,10 +368,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         neutral: 0,
                         real: Math.round(parseFloat(analysisData.confidence["Real News"]) * 100)
                     },
-                    keywords: analysisData.words.map(item => ({
-                        word: item.word,
-                        score: parseFloat(item.weight)
-                    }))
+                    keywords: analysisData.words.map(item => {
+                        const raw = parseFloat(item.weight);
+                        
+                        // Normalize raw score to -1 to +1 range using tanh
+                        const normalized = Math.tanh(raw);
+                        
+                        return {
+                            word: item.word,
+                            score: normalized,
+                            weight: raw 
+                        };
+                    })
                 };
 
                 // Render results

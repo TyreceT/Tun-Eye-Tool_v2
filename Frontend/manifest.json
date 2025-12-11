@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Tun-Eye | Fake News Detector",
+  "version": "5.0",
+  "description": "An AI-powered web extension for detecting fake news about Philippine politics.",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "scripting",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://tuneye.sabihinmolang.eu.org/api/process"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "icons": {
+    "16": "Images/Logo-Blue.png",
+    "48": "Images/Logo-Blue.png",
+    "128": "Images/Logo-Blue.png"
+  },
+
+  "side_panel": {
+    "default_path": "Side Panel/sidepanel.html"
+  },
+  "action": {
+    "default_title": "Open Tun-Eye Panel"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "sidepanel.html",
+        "sidepanel.css",
+        "sidepanel.js",
+        "images/logo.png"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
+

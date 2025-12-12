@@ -516,6 +516,7 @@ blockquote::-webkit-scrollbar-thumb:hover {
 .select-content-box {
     background-color: white;
     padding: 20px;
+    width: 280px;
     height: 410px;
     overflow-y: scroll;
     -ms-overflow-style: none;

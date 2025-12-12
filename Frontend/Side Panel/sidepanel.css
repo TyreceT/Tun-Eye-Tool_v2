@@ -364,8 +364,9 @@ blockquote::-webkit-scrollbar-thumb:hover {
 .content-box {
     background-color: white;
     padding: 20px;
-    border-radius: 5px;
-    border: 2px solid #000000;
+    /* border: 1px solid #000000; */
+    border-radius: 15px;
+    border: 1px solid #33A0B5;
     margin: 15px;
     text-align: center;
 }
@@ -519,8 +520,8 @@ blockquote::-webkit-scrollbar-thumb:hover {
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    border-radius: 5px;
-    border: 2px solid #000000;
+    border-radius: 15px;
+    border: 1px solid #33A0B5;
     margin: 15px;
     text-align: center;
 }
@@ -670,8 +671,8 @@ blockquote::-webkit-scrollbar-thumb:hover {
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    border-radius: 5px;
-    border: 2px solid #000000;
+    border-radius: 15px;
+    border: 1px solid #33A0B5;
     margin: 15px;
     text-align: center;
 }
@@ -887,8 +888,8 @@ blockquote::-webkit-scrollbar-thumb:hover {
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    border-radius: 5px;
-    border: 2px solid #000000;
+    border-radius: 15px;
+    border: 1px solid #33A0B5;
     margin: 15px;
     text-align: center;
 }

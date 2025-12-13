@@ -19,6 +19,7 @@ let keywordChart = null;
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. ELEMENT REFERENCES ---
+    const browserAPI = window.chrome || window.browser;
     const mainContainer = document.getElementById('main-container');
     const loadingContainer = document.getElementById('loading-container');
     const logo = document.getElementById('logo');
@@ -278,20 +279,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (selectContentBtn) {
         selectContentBtn.addEventListener('click', () => {
             body.classList.add('selection-mode-active');
-            chrome.tabs.query({
+            browserAPI.tabs.query({
                 active: true,
                 currentWindow: true
             }, (tabs) => {
-                chrome.scripting.executeScript({
-                        target: {
-                            tabId: tabs[0].id
-                        },
-                        files: ['scripts/content_selector.js']
-                    })
-                    .then(() => chrome.tabs.sendMessage(tabs[0].id, {
-                        type: "ACTIVATE_SELECTION_MODE"
-                    }))
-                    .catch(err => console.error("Script injection failed:", err));
+                if (tabs && tabs[0] && tabs[0].url) {
+                    const url = tabs[0].url;
+                    if (url.startsWith('http://') || url.startsWith('https://')) {
+                        browserAPI.scripting.executeScript({
+                                target: {
+                                    tabId: tabs[0].id
+                                },
+                                files: ['scripts/content_selector.js']
+                            })
+                            .then(() => browserAPI.tabs.sendMessage(tabs[0].id, {
+                                type: "ACTIVATE_SELECTION_MODE"
+                            }))
+                            .catch(err => console.error("Script injection failed:", err));
+                    } else {
+                        console.error("Invalid URL for script injection:", url);
+                    }
+                } else {
+                    console.error("No active tab or URL information available.");
+                }
             });
         });
     }
@@ -443,6 +453,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500); // Initial delay
 
     // Set a default height for chart canvases to prevent layout shifts
-    document.getElementById('confidenceChartCanvas').height = 200;
-    document.getElementById('keywordChartCanvas').height = 250;
+    const confidenceCanvas = document.getElementById('confidenceChartCanvas');
+    if (confidenceCanvas) {
+        confidenceCanvas.height = 200;
+    }
+
+    const keywordCanvas = document.getElementById('keywordChartCanvas');
+    if (keywordCanvas) {
+        keywordCanvas.height = 250;
+    }
 });

@@ -7,8 +7,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     overflow: hidden;
-    width: 350px;
-    min-width: 350px;
+    width: 100%;
     max-width: 350px;
     margin: 0;
     padding: 0;
@@ -149,7 +148,7 @@ blockquote::-webkit-scrollbar-thumb:hover {
     position: relative;
     top: -5px;
     left: 0px;
-    border-radius: 50%;
+    border-radius: 15px;
     width: 45px;
     height: 45px;
     padding: 0;
@@ -198,22 +197,23 @@ blockquote::-webkit-scrollbar-thumb:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 10px;
     box-sizing: border-box;
 }
 
 .header-left {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 10px;
 }
 
 .header-main-title {
     font-size: 32px;
-    font-weight: 700;
-    color: #091263;
+    font-weight: 900;
+    color: #2BA6BF;
     margin: 0;
     line-height: 1;
+    user-select: none;
 }
 
 .header-subtitle {
@@ -243,11 +243,10 @@ blockquote::-webkit-scrollbar-thumb:hover {
 }
 
 .header-logo {
-    margin-top: -10;
-    margin-left: 5px;
-    width: 80px;
-    height: auto;
+    width: 45px;
+    height: 45px;
     animation: fadeIn 0.5s;
+    user-select: none;
 }
 
 /* ==========================================================================
@@ -369,6 +368,7 @@ blockquote::-webkit-scrollbar-thumb:hover {
     border: 1px solid #33A0B5;
     margin: 15px;
     text-align: center;
+    user-select: none;
 }
 
 .content-box p {
@@ -418,6 +418,7 @@ blockquote::-webkit-scrollbar-thumb:hover {
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    pointer-events: none;
 }
 
 .navigation ul {
@@ -464,11 +465,12 @@ blockquote::-webkit-scrollbar-thumb:hover {
     position: absolute;
     color: var(--clr);
     font-weight: 400;
-    font-size: 0.75em;
+    font-size: 12px;
     letter-spacing: 0.05em;
     transition: 0.5s;
     opacity: 0;
     transform: translateY(20px);
+    user-select: none;
 }
 
 .navigation ul li.active a .text {
@@ -516,7 +518,7 @@ blockquote::-webkit-scrollbar-thumb:hover {
 .select-content-box {
     background-color: white;
     padding: 20px;
-    height: 410px;
+    height: 500px;
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -524,6 +526,8 @@ blockquote::-webkit-scrollbar-thumb:hover {
     border: 1px solid #33A0B5;
     margin: 15px;
     text-align: center;
+    pointer-events: none;
+    user-select: none;
 }
 
 .select-content-box::-webkit-scrollbar {

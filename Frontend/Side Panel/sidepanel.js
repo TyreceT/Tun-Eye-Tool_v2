@@ -443,6 +443,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500); // Initial delay
 
     // Set a default height for chart canvases to prevent layout shifts
-    document.getElementById('confidenceChartCanvas').height = 200;
-    document.getElementById('keywordChartCanvas').height = 250;
+    const confidenceCanvas = document.getElementById('confidenceChartCanvas');
+    if (confidenceCanvas) {
+        confidenceCanvas.height = 200;
+    }
+
+    const keywordCanvas = document.getElementById('keywordChartCanvas');
+    if (keywordCanvas) {
+        keywordCanvas.height = 250;
+    }
 });

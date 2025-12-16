@@ -412,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 // Reset the analyze button to its initial state
                 analyzeBtn.disabled = false;
-                btnText.textContent = 'Start Analyze';
+                btnText.textContent = 'Analyze Now';
                 spinner.classList.add('hidden');
             }
         });

@@ -12,7 +12,7 @@ body {
     max-width: 350px;
     margin: 0;
     padding: 0;
-    background-color: #f9f9fb;
+    background: linear-gradient(to bottom, #E7FBFF, #B2E0E9, #99EEFF);
     color: #333;
     box-sizing: border-box;
     overflow-x: hidden;
@@ -364,6 +364,7 @@ blockquote::-webkit-scrollbar-thumb:hover {
 .content-box {
     background-color: white;
     padding: 20px;
+    width: 280px;
     /* border: 1px solid #000000; */
     border-radius: 15px;
     border: 1px solid #33A0B5;

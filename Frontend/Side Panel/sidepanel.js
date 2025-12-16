@@ -350,6 +350,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Send data to the backend API
+                    // Add debug logs
+                console.log('=== DEBUG: Sending to API ===');
+                console.log('Content type:', contentToAnalyze.type);
+                console.log('Content value length:', contentToAnalyze.value?.length);
+                console.log('Content value starts with:', contentToAnalyze.value?.substring(0, 50));
+                console.log('Full payload:', JSON.stringify(contentToAnalyze).substring(0, 200));
+                
+                // Send data to the backend API
                 const response = await fetch('https://tuneye.sabihinmolang.eu.org/api/process', {
                     method: 'POST',
                     headers: {
@@ -443,6 +451,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500); // Initial delay
 
     // Set a default height for chart canvases to prevent layout shifts
-    document.getElementById('confidenceChartCanvas').height = 200;
-    document.getElementById('keywordChartCanvas').height = 250;
+    // document.getElementById('confidenceChartCanvas').height = 200;
+    // document.getElementById('keywordChartCanvas').height = 250;
 });

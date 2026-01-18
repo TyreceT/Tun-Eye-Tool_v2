@@ -1,4 +1,25 @@
-// sidepanel.js
+
+/* ==========================================================================
+   PROGRAM: Side Panel Module (sidepanel.js)
+   AUTHOR: Whayne Tyrece D. Tan
+   SYSTEM: Tun-Eye Extension – Frontend UI 
+   CREATED: 10-09-2025
+   LAST REVISED: 01-18-2026
+   PURPOSE:
+       Handles side panel interactions including page navigation, content selection,
+       analysis requests to the backend API, and rendering charts.
+   DESCRIPTION:
+       This module is part of the Tun-Eye extension frontend. It manages:
+         - Navigation between intro, select, preview, and result pages
+         - Display of selected text or image for preview
+         - Sending content to API and receiving analysis results
+         - Rendering confidence and keyword charts with Chart.js
+         - Listening to Chrome storage events and injecting templates
+   DATA & LOGIC:
+       Uses DOM elements, Chart.js instances, Chrome storage API, and event listeners
+       to manage UI state and update analysis results dynamically.
+========================================================================== */
+
 
 // =================================================================================
 // GLOBAL VARIABLES & CONFIGURATION
@@ -34,9 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.navigation .list a');
     const WORD_THRESHOLD = 1e-6; // anything between -1e-6 and +1e-6 is neutral
 
-
-
-    // --- 2. CORE FUNCTIONS ---
+    // =================================================================================
+    // NAVIGATION FUNCTIONS
+    // =================================================================================
 
     /**
      * Hides all pages and shows the one with the specified ID.
@@ -71,6 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // =================================================================================
+    // CONTENT DISPLAY FUNCTIONS
+    // =================================================================================
+
     /**
      * Displays the selected text or image in the preview container.
      * @param {object} content - The content object from storage {type: 'text'|'image', data: '...'}.
@@ -94,6 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // =================================================================================
+    // CHART RENDERING FUNCTIONS
+    // =================================================================================
+    
     /**
      * Renders the analysis result charts using Chart.js.
      * @param {object} data - The formatted data for rendering charts.
@@ -170,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 confidenceCanvas.title = "";
             }
         });
-
 
         // Dynamic Scaling for Keyword Chart
         const scores = data.keywords.map(k => k.score);
@@ -255,7 +283,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- 3. EVENT LISTENERS ---
+    // =================================================================================
+    // EVENT LISTENERS
+    // =================================================================================
 
     // Generic navigation buttons (Next, Back)
     navButtons.forEach(button => {
@@ -326,17 +356,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Update UI to "analyzing" state
-            analyzeBtn.disabled = true;
-            btnText.textContent = 'Analyzing';
-            spinner.classList.remove('hidden');
-            navigateTo('page-result');
-
+            const tryAgainBtn = document.querySelector('.nav-button.back');
+            if (tryAgainBtn) tryAgainBtn.classList.add('invisible');            
+            
             // Show loading spinner on the result page
             setTimeout(() => {
-                const navButton = document.querySelector('.nav-button');
-                if (navButton) navButton.style.display = 'none';
-
                 const resultContent = document.getElementById('result-content');
                 if (resultContent) {
                     resultContent.innerHTML = `
@@ -393,8 +417,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Render results
                 requestAnimationFrame(() => {
                     renderResultCharts(formattedData);
-                    const navButton = document.querySelector('.nav-button');
-                    if (navButton) navButton.style.display = '';
+                    const tryAgainBtn = document.querySelector('.nav-button.back');
+                    if (tryAgainBtn) tryAgainBtn.classList.remove('invisible');
                 });
 
             } catch (error) {
@@ -406,8 +430,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p style="font-size: 12px;">Error: ${error.message}</p>
                     `;
                 }
-                const navButton = document.querySelector('.nav-button');
-                if (navButton) navButton.style.display = 'inline-flex';
+                const tryAgainBtn = document.querySelector('.nav-button.back');
+                if (tryAgainBtn) tryAgainBtn.classList.remove('invisible');
 
             } finally {
                 // Reset the analyze button to its initial state
@@ -418,7 +442,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Chrome storage listener for when new content is selected
+    // =================================================================================
+    // STORAGE LISTENER
+    // =================================================================================
+
     chrome.storage.onChanged.addListener((changes, namespace) => {
         if (namespace === 'local' && changes.contentToAnalyze) {
             const newContent = changes.contentToAnalyze.newValue;
@@ -431,8 +458,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
-    // --- 4. INITIAL EXECUTION ---
+    // =================================================================================
+    // INITIAL EXECUTION
+    // =================================================================================
 
     // Initial loading animation sequence
     setTimeout(() => {
@@ -450,7 +478,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1500); // Time logo is visible
     }, 500); // Initial delay
 
-    // Set a default height for chart canvases to prevent layout shifts
-    // document.getElementById('confidenceChartCanvas').height = 200;
-    // document.getElementById('keywordChartCanvas').height = 250;
 });
+
+// =================================================================================
+// TEMPLATE INJECTIONS
+// =================================================================================
+
+    // Title Header Block
+    document.addEventListener("DOMContentLoaded", () => {
+        const template = document.getElementById("app-header-template");
+        document.querySelectorAll(".app-header-slot").forEach(slot => {
+            slot.appendChild(template.content.cloneNode(true));
+        });
+    });
+
+    // Navigation Bar
+    document.addEventListener("DOMContentLoaded", () => {
+        const template = document.getElementById("navigation-template");
+
+        document.querySelectorAll(".navigation-slot").forEach(slot => {
+            const clone = template.content.cloneNode(true);
+            const indicator = slot.querySelector(
+                ".indicator, .indicator-preview, .indicator-result"
+            );
+
+            // insert <ul> BEFORE indicator so indicator stays visible
+            if (indicator) {
+                slot.insertBefore(clone, indicator);
+            } else {
+                slot.appendChild(clone);
+            }
+
+            // set active nav item
+            const activeStep = slot.dataset.active;
+            if (!activeStep) return;
+
+            const items = slot.querySelectorAll(".list");
+            items.forEach(item => {
+                item.classList.toggle(
+                    "active",
+                    item.dataset.step === activeStep
+                );
+            });
+        });
+    });

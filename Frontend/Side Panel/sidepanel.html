@@ -1,3 +1,29 @@
+<!-- ==========================================================================
+   PROGRAM: Tun-Eye Extension UI (sidepanel.html)
+   AUTHOR: Whayne Tyrece D. Tan
+   SYSTEM: Frontend interface for Tun-Eye Fake News Detector
+   CREATED: 10-09-2025
+   LAST REVISED: 01-18-2026
+   PURPOSE:
+       Provides the HTML structure for the Tun-Eye browser extension, including:
+       - Loading screen
+       - Intro / instruction page
+       - Content selection page
+       - Preview page
+       - Result page with charts
+       - Templates for headers and navigation
+   DESCRIPTION:
+       This file defines the structure and layout of the extension's side panel,
+       integrates external CSS (sidepanel.css, FontAwesome), and includes Chart.js
+       for data visualization. The HTML works with sidepanel.js to handle user
+       interactions and dynamic content updates.
+   NOTES:
+       - All dynamic content (charts, previews, navigation) is handled by sidepanel.js
+       - Uses templates for reusable header and navigation components
+       - Ensure IDs and class names remain consistent with sidepanel.js
+========================================================================== -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,16 +31,14 @@
     <link rel="stylesheet" href="sidepanel.css">
     <!-- <script src="https://kit.fontawesome.com/30e45a7c19.js" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="chart.js"></script>
-
-
+    <script src="chart.js"></script>  <!-- Chart.js library for rendering charts -->
 </head>
 
 <body>
 
     <!-- LOADING SCREEN -->
     <div id="loading-container">
-        <div id="loader-animation"></div>
+        <div id="loader-animation"></div> <!-- spinning loader animation -->
         <img id="logo" class="hidden" src="/images/logo.png" alt="Tun-Eye Logo">
         <h1 id="logo-title" class="hidden">TUN-EYE</h1>
         <h2 id="logo-text" class="hidden">Fake News Detector</h2>
@@ -29,27 +53,23 @@
             </div>
             <div class="content-box">
                 <h3 style="font-size: 14px; margin-top: -10px;">Know the Truth Behind Every News.</h3>
-                    <p>Tun-Eye helps you check if a Facebook post about politics is real or fake news. It analyzes both text and images, whether they’re in Filipino, English, or Taglish.</p>
-                    <p>Just input the post, and Tun-Eye will do the rest, giving you a quick and simple way to stay informed and know what’s real or fake in political news online. </p>
+                <p>Tun-Eye helps you check if a Facebook post about politics is real or fake news. It analyzes both text and images, whether they’re in Filipino, English, or Taglish.</p>
+                <p>Just input the post, and Tun-Eye will do the rest, giving you a quick and simple way to stay informed and know what’s real or fake in political news online.</p>
 
                 <h3>How It Works</h3>
-                    <p>1. Highlight the text or hover over an image.</p>
-                    <p>2. Select "Tun-Eye" from the menu.</p>
-                    <p>3. Click "Detect" to start the analysis.</p>
-                    <p>4. View the results.</p>
+                <p>1. Highlight the text or hover over an image.</p>
+                <p>2. Select "Tun-Eye" from the menu.</p>
+                <p>3. Click "Detect" to start the analysis.</p>
+                <p>4. View the results.</p>
 
                 <h3>Remember</h3>
-                    <p>Tun-Eye helps you think critically, but always verify with trusted sources.</p>
+                <p>Tun-Eye helps you think critically, but always verify with trusted sources.</p>
             </div>
             <button class="nav-button" data-target="page-select">Get Started</button>
         </div>
-        
 
-        <!-- SELECT CONTENT PAGE -->
-         
-        <div id="page-select" class="page hidden">
-
-            <!-- Tun-Eye Logo Title and Icons -->
+        <!-- TITLE HEADER TEMPLATE -->
+        <template id="app-header-template">
             <header class="app-header">
                 <div class="header-left">
                     <img src="/Images/Logo-Blue.png" alt="Tun-Eye Logo" class="header-logo">
@@ -60,53 +80,55 @@
                 </div>
 
                 <div class="header-right-icons">
+                    <!-- Tooltip for guidance -->
                     <div class="tooltip">
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            width="20" height="20" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12" y2="16"></line>
+                             width="20" height="20" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12" y2="16"></line>
                         </svg>
-
                         <span class="tooltip-text">
-                        Remember, Tun-Eye will only help you think critically. Always verify with reliable sources.
+                            Remember, Tun-Eye will only help you think critically. Always verify with reliable sources.
                         </span>
                     </div>
                 </div>
             </header>
+        </template>
 
-            <!-- Navigation Bar -->
+        <!-- NAVIGATION TEMPLATE -->
+        <template id="navigation-template">
             <div class="navigation">
                 <ul>
-                    <li class="list active">
-                        <a href="#">
-                            <span class="icon">
-                                <i class="fa-solid fa-arrow-pointer"></i>
-                            </span>
+                    <li class="list" data-step="select">
+                        <a aria-disabled="true">
+                            <span class="icon"><i class="fa-solid fa-arrow-pointer"></i></span>
                             <span class="text">Select</span>
                         </a>
                     </li>
-                    <li class="list"> <!--gawing list active-->
-                        <a href="#">
-                            <span class="icon">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </span>
+                    <li class="list" data-step="preview">
+                        <a aria-disabled="true">
+                            <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
                             <span class="text">Preview</span>
                         </a>
                     </li>
-                    <li class="list">
-                        <a href="#">
-                            <span class="icon">
-                                <i class="fa-solid fa-scale-balanced"></i>
-                            </span>
+                    <li class="list" data-step="result">
+                        <a aria-disabled="true">
+                            <span class="icon"><i class="fa-solid fa-scale-balanced"></i></span>
                             <span class="text">Result</span>
                         </a>
                     </li>
-
-                    <div class="indicator"></div>
                 </ul>
+            </div>
+        </template>
+
+        <!-- SELECT CONTENT PAGE: user selects text or image -->
+        <div id="page-select" class="page hidden">
+            <div class="app-header-slot"></div> <!-- header placeholder -->
+            <div class="navigation-slot navigation-select" data-active="select">
+                <div class="indicator"></div>
             </div>
 
             <main class="select-page-content">
@@ -126,85 +148,25 @@
                 </div>
                 <button id="select-content-btn" class="nav-button">Select from Page</button>
             </main>
-            
         </div>
 
-        
-
-        <!-- PREVIEW CONTENT PAGE -->
+        <!-- PREVIEW CONTENT PAGE: shows selected content before analysis -->
         <div id="page-preview" class="page hidden">
-
-            <!-- Tun-Eye Logo Title and Icons -->
-            <header class="app-header">
-                <div class="header-left">
-                    <img src="/Images/Logo-Blue.png" alt="Tun-Eye Logo" class="header-logo">
-                    <div class="header-text-group">
-                        <h1 class="header-main-title">TUN-EYE</h1>
-                        <p class="header-subtitle">FAKE NEWS DETECTOR</p>
-                    </div>
-                </div>
-                <div class="header-right-icons">
-                    <div class="tooltip">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            width="20" height="20" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12" y2="16"></line>
-                        </svg>
-
-                        <span class="tooltip-text">
-                        Remember, Tun-Eye will only help you think critically. Always verify with reliable sources.
-                        </span>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Navigation Bar -->
-            <div class="navigation-preview">
-                <ul>
-                    <li class="list">
-                        <a href="#">
-                            <span class="icon">
-                                <i class="fa-solid fa-arrow-pointer"></i>
-                            </span>
-                            <span class="text">Select</span>
-                        </a>
-                    </li>
-                    <li class="list active"> <!--gawing list active-->
-                        <a href="#">
-                            <span class="icon">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </span>
-                            <span class="text">Preview</span>
-                        </a>
-                    </li>
-                    <li class="list">
-                        <a href="#">
-                            <span class="icon">
-                                <i class="fa-solid fa-scale-balanced"></i>
-                            </span>
-                            <span class="text">Result</span>
-                        </a>
-                    </li>
-
-                    <div class="indicator-preview"></div>
-                </ul>
+            <div class="app-header-slot"></div> <!-- header placeholder -->
+            <div class="navigation-slot navigation-preview" data-active="preview">
+                <div class="indicator-preview"></div>
             </div>
 
             <main class="preview-page-content">
                 <div class="preview-content-box">
-                    <div id="content-display"></div>
+                    <div id="content-display"></div> <!-- dynamically displays selected content -->
                 </div>
-
                 <div class="button-group">
-                    
-                    <!-- This is the new icon-only back button -->
+                    <!-- Button to cancel and go back -->
                     <button class="back-icon-btn" data-target="page-select">
                         <i class="fa-solid fa-trash"></i>
                     </button>
-
+                    <!-- Button to send content for analysis -->
                     <button id="analyze-btn" class="nav-button" data-target="page-result">
                         <span class="btn-text">Analyze Now</span>
                         <span class="spinner hidden"></span>
@@ -213,73 +175,24 @@
             </main>
         </div>
 
-        <!-- RESULT PAGE -->
+        <!-- RESULT PAGE: displays analysis results -->
         <div id="page-result" class="page hidden">
-            
-            <header class="app-header">
-                <div class="header-left">
-                    <img src="/Images/Logo-Blue.png" alt="Tun-Eye Logo" class="header-logo">
-                    <div class="header-text-group">
-                        <h1 class="header-main-title">TUN-EYE</h1>
-                        <p class="header-subtitle">FAKE NEWS DETECTOR</p>
-                    </div>
-                </div>
-                <div class="header-right-icons">
-                    <div class="tooltip">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            width="20" height="20" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12" y2="16"></line>
-                        </svg>
-
-                        <span class="tooltip-text">
-                        Remember, Tun-Eye will only help you think critically. Always verify with reliable sources.
-                        </span>
-                    </div>
-                </div>
-            </header>
-
-            <div class="navigation-result">
-                <ul>
-                    <li class="list">
-                        <a href="#" data-target="page-select">
-                            <span class="icon"><i class="fa-solid fa-arrow-pointer"></i></span>
-                            <span class="text">Select</span>
-                        </a>
-                    </li>
-                    <li class="list">
-                        <a href="#" data-target="page-preview">
-                            <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-                            <span class="text">Preview</span>
-                        </a>
-                    </li>
-                    <li class="list active">
-                        <a href="#" data-target="page-result">
-                            <span class="icon">
-                                <i class="fa-solid fa-scale-balanced" style="font-size: 14px;"></i>
-                            </span>
-                            <span class="text">Result</span>
-                        </a>
-                    </li>
-                    <div class="indicator-result"></div>
-                </ul>
+            <div class="app-header-slot"></div> <!-- header placeholder -->
+            <div class="navigation-slot navigation-result" data-active="result">
+                <div class="indicator-result"></div>
             </div>
-            
+
             <main class="result-page-content">
                 <div class="result-content-box">
-                    
-                    <div id="result-content"></div>
+                    <div id="result-content"></div> <!-- dynamically populated analysis results -->
                 </div>
-                    <button class="nav-button back" data-target="page-select">Try Again</button>
+                <button class="nav-button back" data-target="page-select">Try Again</button>
             </main>
         </div>
 
-    </div> <!--main container -->
+    </div> <!-- main container -->
 
-        <script src="sidepanel.js"></script>
-
+    <!-- JS file that handles page interactions and API calls -->
+    <script src="sidepanel.js"></script>
 </body>
 </html>

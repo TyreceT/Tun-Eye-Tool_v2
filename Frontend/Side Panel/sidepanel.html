@@ -1,6 +1,6 @@
 <!-- ==========================================================================
    PROGRAM: Tun-Eye Extension UI (sidepanel.html)
-   AUTHOR: Whayne Tyrece D. Tan
+   AUTHOR: G10 Tun-Eye Group
    SYSTEM: Frontend interface for Tun-Eye Fake News Detector
    CREATED: 10-09-2025
    LAST REVISED: 01-18-2026
@@ -51,35 +51,35 @@
             <div class="intro-header-image">
                 <img src="/Images/Laptop Girl.png" alt="Illustration of news analysis" class="intro-image">
             </div>
-            <div class="content-box">
+            <div class="content-box"> <!-- Introduction-->
                 <h3 style="font-size: 14px; margin-top: -10px;">Know the Truth Behind Every News.</h3>
                 <p>Tun-Eye helps you check if a Facebook post about politics is real or fake news. It analyzes both text and images, whether they’re in Filipino, English, or Taglish.</p>
                 <p>Just input the post, and Tun-Eye will do the rest, giving you a quick and simple way to stay informed and know what’s real or fake in political news online.</p>
 
-                <h3>How It Works</h3>
+                <h3>How It Works</h3> <!-- Instructions -->
                 <p>1. Highlight the text or hover over an image.</p>
                 <p>2. Select "Tun-Eye" from the menu.</p>
                 <p>3. Click "Detect" to start the analysis.</p>
                 <p>4. View the results.</p>
 
-                <h3>Remember</h3>
+                <h3>Remember</h3> <!-- Reminder -->
                 <p>Tun-Eye helps you think critically, but always verify with trusted sources.</p>
             </div>
             <button class="nav-button" data-target="page-select">Get Started</button>
         </div>
 
         <!-- TITLE HEADER TEMPLATE -->
-        <template id="app-header-template">
+        <template id="app-header-template"> <!-- Left Side - Logo and Title -->
             <header class="app-header">
                 <div class="header-left">
-                    <img src="/Images/Logo-Blue.png" alt="Tun-Eye Logo" class="header-logo">
+                    <img src="/Images/Logo-Blue.png" alt="Tun-Eye Logo" class="header-logo"> 
                     <div class="header-text-group">
                         <h1 class="header-main-title">TUN-EYE</h1>
                         <p class="header-subtitle">FAKE NEWS DETECTOR</p>
                     </div>
                 </div>
 
-                <div class="header-right-icons">
+                <div class="header-right-icons"> <!-- Right Side - Reminder -->
                     <!-- Tooltip for guidance -->
                     <div class="tooltip">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -102,19 +102,19 @@
         <template id="navigation-template">
             <div class="navigation">
                 <ul>
-                    <li class="list" data-step="select">
+                    <li class="list" data-step="select"> <!-- Select -->
                         <a aria-disabled="true">
                             <span class="icon"><i class="fa-solid fa-arrow-pointer"></i></span>
                             <span class="text">Select</span>
                         </a>
                     </li>
-                    <li class="list" data-step="preview">
+                    <li class="list" data-step="preview"> <!-- Preview -->
                         <a aria-disabled="true">
                             <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
                             <span class="text">Preview</span>
                         </a>
                     </li>
-                    <li class="list" data-step="result">
+                    <li class="list" data-step="result"> <!-- Result -->
                         <a aria-disabled="true">
                             <span class="icon"><i class="fa-solid fa-scale-balanced"></i></span>
                             <span class="text">Result</span>
@@ -131,7 +131,7 @@
                 <div class="indicator"></div>
             </div>
 
-            <main class="select-page-content">
+            <main class="select-page-content"> <!-- Content box -->
                 <div class="select-content-box">
                     <h3 style="font-size: 14px; margin-top: -10px;">Select content to analyze</h3>
                     <p>Your selected content will appear here.</p>
@@ -146,18 +146,18 @@
                         <li>Highlight a piece of text or click an image you want to analyze.</li>
                     </ol>
                 </div>
-                <button id="select-content-btn" class="nav-button">Select from Page</button>
+                <button id="select-content-btn" class="nav-button">Select from Page</button> <!-- Select Button -->
             </main>
         </div>
 
         <!-- PREVIEW CONTENT PAGE: shows selected content before analysis -->
         <div id="page-preview" class="page hidden">
             <div class="app-header-slot"></div> <!-- header placeholder -->
-            <div class="navigation-slot navigation-preview" data-active="preview">
+            <div class="navigation-slot navigation-preview" data-active="preview"> <!-- Navigation placeholder -->
                 <div class="indicator-preview"></div>
             </div>
 
-            <main class="preview-page-content">
+            <main class="preview-page-content"> <!-- Preview content box -->
                 <div class="preview-content-box">
                     <div id="content-display"></div> <!-- dynamically displays selected content -->
                 </div>
@@ -178,15 +178,15 @@
         <!-- RESULT PAGE: displays analysis results -->
         <div id="page-result" class="page hidden">
             <div class="app-header-slot"></div> <!-- header placeholder -->
-            <div class="navigation-slot navigation-result" data-active="result">
+            <div class="navigation-slot navigation-result" data-active="result"> <!-- Navigation placeholder -->
                 <div class="indicator-result"></div>
             </div>
 
-            <main class="result-page-content">
+            <main class="result-page-content"> <!-- Result content box -->
                 <div class="result-content-box">
                     <div id="result-content"></div> <!-- dynamically populated analysis results -->
                 </div>
-                <button class="nav-button back" data-target="page-select">Try Again</button>
+                <button class="nav-button back" data-target="page-select">Try Again</button> <!-- Try again button -->
             </main>
         </div>
 
